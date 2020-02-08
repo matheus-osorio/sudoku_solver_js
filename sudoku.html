@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="sudoku.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="sudoku">
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+            <div class="quadrado">
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+                <div class="numero"><br></div>
+            </div>
+        </div>
+        <button class="botao">RESOLVER</button>
+    </body>
+
+    <script>
+        let casaAtual = null
+        function reorganizarSudoku(sudoku){
+            let resultado = []
+            for(let i=0;i<9;i++){
+                for(let j=0;j<3;j++){
+                    for(let k=0;k<3;k++){
+                        resultado.push(sudoku[Math.floor(i/3)*27 + (i%3)*3 + j*9 + k])
+                    }
+                }
+            }
+
+            return resultado
+        }
+
+        function montarSudoku(){
+            let sudoku = []
+            document.querySelectorAll('.numero').forEach(casa => {
+                sudoku.push(casa.innerHTML == '<br>' ? '0':casa.innerHTML)
+            })
+            sudoku = sudoku.map((val)=> Number(val))
+            sudoku = reorganizarSudoku(sudoku)
+            
+            console.log(sudoku)
+            sudoku = vetorParaMatriz(sudoku)
+            let possibilidade = possibilidadeDeNumero(sudoku)
+            sudoku = fazerSudoku(sudoku,0,possibilidade)
+            sudoku = sudoku.reduce((array, linha) => array.concat(linha))
+            let casas = document.querySelectorAll('.numero')
+            casas = Array.from(casas)
+            
+            casas = reorganizarSudoku(casas)
+            casas.forEach((casa,index) => {
+                casa.innerHTML = sudoku[index]
+            })
+        }
+
+        function casaClicada(evento){
+            console.log('clique')
+            casaAtual = evento.target
+        }
+
+        function colocarNaCasa(evento){
+            console.log('tecla')
+            const numero = evento.which
+            console.log(casaAtual!=null,numero>='0'.charCodeAt(0),numero <= '9'.charCodeAt(0))
+            if(casaAtual!=null && numero>='0'.charCodeAt(0) && numero <= '9'.charCodeAt(0)){
+                if(String.fromCharCode(numero) == 0){
+                    casaAtual.innerHTML = '<br>'
+                }
+                else{
+                    casaAtual.innerHTML = String.fromCharCode(numero)
+                }
+            }
+
+            if(numero == '\n'.charCodeAt(0)){ 
+                casaAtual = null
+            }
+        }
+
+        $('.numero').on('click', casaClicada)
+        $('body').keyup(colocarNaCasa)
+        $('.botao').on('click',montarSudoku)
+    </script>
+    <script src="sudoku.js"></script>
+</html>
