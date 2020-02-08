@@ -2,7 +2,7 @@
 
   esse projeto não tem nenhuma pretenção de ser alguma coisa profissional, é um projetinho de um dia de um bot que resolve sudoku.
 
-Eu tenho plena confiança de que esse algoritmo vai resolver qualquer sudoku, e caso você queira utiliza-lo (eu imagino que a unica coisa que você vai achar util vai ser o ==.js==) o algoritmo funciona da seguinte forma:
+Eu tenho plena confiança de que esse algoritmo vai resolver qualquer sudoku, e caso você queira utiliza-lo (eu imagino que a unica coisa que você vai achar util vai ser o .js) o algoritmo funciona da seguinte forma:
 
 1. Crie o sudoku numa matriz 9x9
 2. Chame a função "possibilidadeDeNumero" e passe o sudoku (ela espera uma matriz), salve a variável
